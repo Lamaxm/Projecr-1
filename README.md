@@ -6,7 +6,7 @@ Shawer is a program designed to be a point of contact between those with experie
 
 ### Inspiration:
 
-Everyone has gone through a stage that needs to get an answer from people who specialize in a specific thing . From here, the idea of **shower** began
+Everyone has gone through a stage that needs to get an answer from people who specialize in a specific thing . From here, the idea of **shawer** began
 
 List of Services / Features:
 
