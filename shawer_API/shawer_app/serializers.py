@@ -1,11 +1,13 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, comment, courses
 
 
-class UserSerializer(serializers.ModelSerializer):
+class commentSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = comment
+        fields = '__all__'
 
-    pass
-class consultantRegisterSerializer(serializers.ModelSerializer):
-    pass
-class clientRegisterSerializer(serializers.ModelSerializer):
-    pass
+class coursesSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = courses
+        fields = '__all__'

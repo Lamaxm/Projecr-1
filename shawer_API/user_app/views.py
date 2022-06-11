@@ -42,18 +42,6 @@ def add_client(request : Request):
         dataResponse = {"msg" : "couldn't create a client"}
         return Response( dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def list_consultant(request : Request):
-    consultant = User.objects.filter(as_consultant=True)
-
-    dataResponse = {
-        "msg" : "List of All consultant",
-        "consultant" : consultantRegisterSerializer(instance=consultant, many=True).data
-    }
-
-    return Response(dataResponse)
-
-"""call all consultant for page'consultant"""
 
 @api_view(['DELETE'])
 def delete_user(request: Request, user_id):

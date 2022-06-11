@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shawer_app',
     'user_app',
+    'chat_app',
     'rest_framework',
     'rest_auth',
 
