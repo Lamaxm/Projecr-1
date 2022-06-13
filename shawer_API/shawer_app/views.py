@@ -1,30 +1,32 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from .models import comment, courses
+from .permissions import IsOwn
 from .serializers import commentSerializer, coursesSerializer
 from user_app.models import User
-from user_app.serializers import consultantRegisterSerializer
+from user_app.serializers import CustomRegisterSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view , authentication_classes, permission_classes
 from rest_framework.request import Request
 
 
 @api_view(['GET'])
 def list_consultant(request : Request):
+    """call all consultant in page'consultant"""
     consultant = User.objects.filter(as_consultant=True)
 
     dataResponse = {
         "msg" : "List of All consultant",
-        "consultant" : consultantRegisterSerializer(instance=consultant, many=True).data
+        "consultant" : CustomRegisterSerializer(instance=consultant, many=True).data
     }
 
     return Response(dataResponse)
 
-"""call all consultant for page'consultant"""
-
-
 @api_view(['GET'])
-def comment_detile(request, pk):
+def comment_list(request, pk):
+    """ the view to display comments """
     profile = get_object_or_404(User, pk=pk)
     comment = profile.comments.filter(active=True)
     dataResponse = {
@@ -36,14 +38,19 @@ def comment_detile(request, pk):
 
 
 @api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated , IsOwn])
 def delete_comment(request: Request, comment_id):
+    """ the view for delete commint"""
     comment_dalete = comment.objects.get(id=comment_id)
     comment_dalete.delete()
     return Response({"msg" : "Deleted Successfully"})
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def add_comment(request : Request):
-
+    """ the view for add new comment"""
     new_comment = commentSerializer(data=request.data)
     if new_comment.is_valid():
         new_comment.save()
@@ -58,8 +65,10 @@ def add_comment(request : Request):
         return Response( dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def add_course(request : Request):
-
+    """ the view for add new course"""
     new_course = coursesSerializer(data=request.data)
     if new_course.is_valid():
         new_course.save()
@@ -74,13 +83,19 @@ def add_course(request : Request):
         return Response( dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated , IsOwn])
 def delete_course(request: Request, course_id):
+    """ the view for delete course"""
     course_dalete = courses.objects.get(id=course_id)
     course_dalete.delete()
     return Response({"msg" : "Deleted Successfully"})
 
 @api_view(['PUT'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated , IsOwn])
 def update_courses(request : Request, course_id):
+    """ the view for update course"""
     course_update = courses.objects.get(id=course_id)
 
     updated_course = coursesSerializer(instance=course_update, data=request.data)

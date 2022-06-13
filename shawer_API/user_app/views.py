@@ -1,46 +1,34 @@
 from os import stat
 from urllib import response
+
+from django.contrib.auth import authenticate
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework_simplejwt.tokens import AccessToken
 from .models import User
-from .serializers import consultantRegisterSerializer, clientRegisterSerializer, UserSerializer
+from .serializers import consultantRegisterSerializer, clientRegisterSerializer, UserSerializer, \
+    CustomRegisterSerializer
 
 
 @api_view(['POST'])
-def add_consultant(request : Request):
+def add_user(request : Request):
 
-    new_consultant = consultantRegisterSerializer(data=request.data)
-    if new_consultant.is_valid():
-        new_consultant.save()
+    new_user = CustomRegisterSerializer(data=request.data)
+    if new_user.is_valid():
+        new_user.save()
         dataResponse = {
-            "msg" : "Created Successfully",
-            "consultant" : new_consultant.data
+            "msg": "Created Successfully",
+            "new_user": new_user.data
         }
         return Response(dataResponse)
     else:
-        print(new_consultant.errors)
-        dataResponse = {"msg" : "couldn't create a consultant"}
+        print(new_user.errors)
+        dataResponse = {"msg" : "couldn't create a user"}
         return Response( dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def add_client(request : Request):
-
-    new_client = clientRegisterSerializer(data=request.data)
-    if new_client.is_valid():
-        new_client.save()
-        dataResponse = {
-            "msg" : "Created Successfully",
-            "client" : new_client.data
-        }
-        return Response(dataResponse)
-    else:
-        print(new_client.errors)
-        dataResponse = {"msg" : "couldn't create a client"}
-        return Response( dataResponse, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
@@ -67,3 +55,20 @@ def update_user(request : Request, user_id):
         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
 
 """update any user"""
+
+@api_view(['POST'])
+def login_user(request : Request):
+
+    if 'username' in request.data and 'password' in request.data:
+        user = authenticate(request, username=request.data['username'], password=request.data['password'])
+        if user is not None:
+            #create the token , then give the token to the user in the response
+            token = AccessToken.for_user(user)
+            responseData = {
+                "msg" : "Your token is ready",
+                "token" : str(token)
+            }
+            return Response(responseData)
+
+
+    return Response({"msg" : "please provide your username & password"}, status=status.HTTP_401_UNAUTHORIZED)

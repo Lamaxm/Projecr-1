@@ -3,7 +3,6 @@ from user_app.models import User
 
 class comment(models.Model):
     name=models.CharField(max_length=50, verbose_name="الاسم")
-    email=models.EmailField()
     body=models.TextField(verbose_name="التعليق")
     comment_date=models.DateTimeField(auto_now_add=True)
     active=models.BooleanField(default=False)
@@ -14,7 +13,7 @@ class comment(models.Model):
         self.save()
 
     def __str__(self) -> str:
-        return 'علق {} على {} '.format(self.name, self.profile)
+        return 'علق {} على {} {}'.format(self.name, self.profile,self.id)
 
 class courses(models.Model):
     name = models.CharField(max_length=50)

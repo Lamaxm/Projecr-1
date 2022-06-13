@@ -21,6 +21,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('user/',include('user_app.urls')),
     path('shawer/',include('shawer_app.urls')),
-    path('chat/',include(('chat_app.urls'))),
+    path('chat/',include('chat_app.urls'))
 
 ]

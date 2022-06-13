@@ -14,11 +14,11 @@ class User(AbstractUser):
     """user model"""
 
 class profil_consultant(models.Model):
-    user=models.OneToOneField(User,related_name='consultant' , on_delete=models.CASCADE)
+    user = models.OneToOneField(User,related_name='consultant', on_delete=models.CASCADE)
     start_date = models.DateField(null=True)
-    expertise_field = models.CharField(max_length=50,null=True)
-    statment = models.TextField(max_length=240,null=True)
-    image = models.ImageField(upload_to="images/",null=True)
+    expertise_field = models.CharField(max_length=50, null=True)
+    statment = models.TextField(max_length=240, null=True)
+    image = models.ImageField(upload_to="images/", null=True)
 
     def __str__(self) -> str:
         return self.first_name + " " + self.last_name
