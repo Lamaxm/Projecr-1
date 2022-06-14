@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 
@@ -117,6 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+
+SIMPLE_JWT = {
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
+'REFRESH_TOKEN_LIFETIME': timedelta(days=1)}
 
 USE_I18N = True
 

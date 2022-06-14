@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .models import comment, courses
 from .permissions import IsOwn
-from .serializers import commentSerializer, coursesSerializer
+from .serializers import commentSerializer, coursesSerializer, timesSerializer
 from user_app.models import User
 from user_app.serializers import CustomRegisterSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -41,7 +41,7 @@ def comment_list(request, pk):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated , IsOwn])
 def delete_comment(request: Request, comment_id):
-    """ the view for delete commint"""
+    """ the view for delete comment"""
     comment_dalete = comment.objects.get(id=comment_id)
     comment_dalete.delete()
     return Response({"msg" : "Deleted Successfully"})
@@ -109,3 +109,21 @@ def update_courses(request : Request, course_id):
     else:
         print(updated_course.errors)
         return Response({"msg" : "bad request, cannot update"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def add_time(request : Request):
+    """ the view for add new time"""
+    new_time = timesSerializer(data=request.data)
+    if new_time.is_valid():
+        new_time.save()
+        dataResponse = {
+            "msg" : "create Successfully",
+            "time" : new_time.data
+        }
+        return Response(dataResponse)
+    else:
+        print(new_time.errors)
+        dataResponse = {"msg" : "couldn't create a this time"}
+        return Response( dataResponse, status=status.HTTP_400_BAD_REQUEST)

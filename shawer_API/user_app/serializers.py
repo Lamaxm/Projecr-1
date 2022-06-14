@@ -4,13 +4,14 @@ from allauth.account.adapter import get_adapter
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(write_only=True)
+    """For Serializing User"""
     class Meta:
         model = User
-        fields = ['email', 'username',"last_name", 'password', 'as_client',"first_name", 'as_consultant' ,'password2']
+        fields = ['email', 'username',"last_name", 'password', 'as_client',"first_name", 'as_consultant']
 
 
 class CustomRegisterSerializer(serializers.ModelSerializer):
+    """For Serializing Custom"""
     password2 = serializers.CharField(write_only=True)
     as_client = serializers.BooleanField()
     as_consultant = serializers.BooleanField()
@@ -41,6 +42,7 @@ class CustomRegisterSerializer(serializers.ModelSerializer):
 
 
 class consultantRegisterSerializer(serializers.ModelSerializer):
+    """For Serializing consultant"""
     class Meta:
         model = profil_consultant
         fields = '__all_'
@@ -49,6 +51,7 @@ class consultantRegisterSerializer(serializers.ModelSerializer):
 """create serialize consultant"""
 
 class clientRegisterSerializer(serializers.ModelSerializer):
+    """For Serializing Clinet"""
     class Meta:
         model = profil_client
         fields = '__all__'

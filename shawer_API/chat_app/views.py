@@ -3,7 +3,7 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from chat_app.models import Message
-from chat_app.serializers import MessageSerializer, UserSerializer
+from chat_app.serializers import MessageSerializer
 
 @csrf_exempt
 def message_list(request, sender=None, receiver=None):

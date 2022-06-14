@@ -1,5 +1,6 @@
 from user_app.models import User
 from django.db import models
+""" model for message"""
 class Message(models.Model):
      sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
      receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
@@ -10,3 +11,4 @@ class Message(models.Model):
            return self.message
      class Meta:
            ordering = ('timestamp',)
+

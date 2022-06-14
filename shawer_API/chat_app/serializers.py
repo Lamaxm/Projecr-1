@@ -1,15 +1,7 @@
 from user_app.models import User
 from rest_framework import serializers
 from chat_app.models import Message
-#
-# User Serializer
-class UserSerializer(serializers.ModelSerializer):
-    """For Serializing User"""
-    password = serializers.CharField(write_only=True)
-    class Meta:
-        model = User
-        fields = ['username', 'password']
-#
+
 # Message Serializer
 class MessageSerializer(serializers.ModelSerializer):
     """For Serializing Message"""
