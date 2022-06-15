@@ -1,0 +1,1 @@
+web: gunicorn shawer_API.wsgi

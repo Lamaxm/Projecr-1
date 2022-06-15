@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+
 from datetime import timedelta
 from pathlib import Path
+
 
 
 
@@ -27,7 +29,7 @@ SECRET_KEY = 'django-insecure-f6@1@(xk8-5o_yw15#pfs^@%q&vzz@=ddp-)@d6&5sj-hl)70&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shawerproject.herokuapp.com']
 
 
 # Application definition
@@ -90,6 +92,10 @@ DATABASES = {
         'HOST':'localhost'
     }
 }
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
